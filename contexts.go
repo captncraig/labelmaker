@@ -20,3 +20,9 @@ type ErrorContext struct {
 	*BaseContext
 	Err string
 }
+
+type RepoConfigContext struct {
+	*BaseContext
+	User, Name    string
+	HookInstalled bool
+}

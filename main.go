@@ -4,7 +4,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -20,6 +19,7 @@ var (
 	flagDev     = flag.Bool("d", false, "Dev mode")
 	templeStore temple.TemplateStore
 	gh          ssgo.SSO
+	rootHost    string
 )
 
 func init() {
@@ -37,6 +37,7 @@ func init() {
 	if clientSecret = os.Getenv("GH_CLIENT_SECRET"); clientSecret == "" {
 		log.Fatal("GH_CLIENT_SECRET required")
 	}
+	rootHost = os.Getenv("LABEL_HOST")
 	gh = ssgo.NewGithub(clientId, clientSecret, "write:repo_hook", "public_repo")
 
 }
@@ -119,5 +120,24 @@ func home(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *Bas
 }
 
 func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *BaseContext, client *github.Client) error {
-	return fmt.Errorf("%s/%s", ps.ByName("user"), ps.ByName("name"))
+	listHookOpts := &github.ListOptions{PerPage: 100}
+	targetUrl := rootHost
+	if targetUrl == "" {
+		targetUrl = "http://" + r.Host
+	}
+	targetUrl += "/hook"
+	hooks, _, err := client.Repositories.ListHooks(ps.ByName("user"), ps.ByName("name"), listHookOpts)
+	if err != nil {
+		return err
+	}
+	repoCtx := &RepoConfigContext{ctx, ps.ByName("user"), ps.ByName("name"), false}
+	for _, hook := range hooks {
+		if url, ok := hook.Config["url"]; ok {
+			if urlStr, ok := url.(string); ok && urlStr == targetUrl {
+				repoCtx.HookInstalled = true
+			}
+		}
+	}
+	w.Header().Set("Content-Type", "text/html")
+	return templeStore.Execute(w, repoCtx, "config")
 }

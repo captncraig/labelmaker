@@ -4,6 +4,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -45,6 +46,7 @@ func main() {
 	router.HandlerFunc("GET", "/login", gh.RedirectToLogin)
 	router.HandlerFunc("GET", "/ghauth", gh.ExchangeCodeForToken)
 	h("GET", "/", home, router)
+	h("GET", "/:user/:name", repo, router)
 	router.HandlerFunc("GET", "/logout", func(w http.ResponseWriter, r *http.Request) {
 		gh.ClearCookie(w)
 		http.Redirect(w, r, "/", 302)
@@ -66,7 +68,7 @@ func handleError(w http.ResponseWriter, r *http.Request, err error) {
 var loggedOutContext = &BaseContext{UserId: 0, UserName: "", ImageURL: ""}
 
 // handler type for my entire app.
-type labelMakerHandler func(w http.ResponseWriter, r *http.Request, ctx *BaseContext, client *github.Client) error
+type labelMakerHandler func(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *BaseContext, client *github.Client) error
 
 // my "middleware" handler. Looks up token, gets github user, executes inner handler.
 // handles errors appropriately.
@@ -91,18 +93,14 @@ func h(method string, route string, f labelMakerHandler, router *httprouter.Rout
 			return
 		}
 		ctx := &BaseContext{UserId: *u.ID, UserName: *u.Login, ImageURL: *u.AvatarURL}
-		err = f(w, r, ctx, client)
+		err = f(w, r, ps, ctx, client)
 		if err != nil {
 			handleError(w, r, err)
 		}
 	})
 }
 
-func home(w http.ResponseWriter, r *http.Request, ctx *BaseContext, client *github.Client) error {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return nil
-	}
+func home(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *BaseContext, client *github.Client) error {
 	listOpts := &github.RepositoryListOptions{}
 	listOpts.Direction = "desc"
 	listOpts.Sort = "pushed"
@@ -118,4 +116,9 @@ func home(w http.ResponseWriter, r *http.Request, ctx *BaseContext, client *gith
 
 	w.Header().Set("Content-Type", "text/html")
 	return templeStore.Execute(w, homeCtx, "loggedIn")
+}
+
+func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *BaseContext, client *github.Client) error {
+
+	return fmt.Errorf(ps.ByName("user"), ps.ByName("name"))
 }

@@ -1,0 +1,8 @@
+{{template "header" .}}
+
+<h2>Welcome</h2>
+<p>This is a simple utility that applies simple labeling rules to pull requests to help smooth out your workflow.
+
+<p> To get started: <a href="/login">login with github.</a>
+
+{{template "footer" .}}

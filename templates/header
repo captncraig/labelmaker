@@ -1,0 +1,35 @@
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<title>Labelmaker</title>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+			Labelmaker
+      </a>
+    </div>
+	
+	<ul class="nav navbar-nav navbar-right">
+		{{if .UserName}}
+			<li><a href="https://github.com/{{.UserName}}">{{.UserName}}</a></li>
+			<li><img src="{{.ImageURL}}" width="40" style='margin-top:5px;'></img></li>
+			<li><a href="/logout">Logout</a></li>
+		{{else}}
+        <li><a href="/login">Login</a></li>
+		{{end}}
+	</ul>
+	
+  </div>
+</nav>
+
+<div style='clear:both; height:40px'></div>
+<div class='container'>

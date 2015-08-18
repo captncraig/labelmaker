@@ -1,0 +1,9 @@
+{{template "header" .}}
+Oh Crap something went wrong.
+<br/>
+This is all I know: <br/>
+<pre>{{.}}</pre>
+<br/>
+<a href="/">Return to Homepage perhaps</a>
+
+{{template "footer" .}}

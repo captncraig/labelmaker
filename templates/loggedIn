@@ -1,0 +1,12 @@
+{{template "header" .}}
+
+<h3>{{.UserName}}'s repositories:</h3>
+
+<ul>
+{{range .Repos}}
+<li><a href="/repo/{{.User}}/{{.Name}}">{{.User}}/{{.Name}}</a></li>
+
+{{end}}
+</ul>
+
+{{template "footer" .}}

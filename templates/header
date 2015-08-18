@@ -10,7 +10,7 @@
 <body>
 
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-top">
   <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">
@@ -31,5 +31,4 @@
   </div>
 </nav>
 
-<div style='clear:both; height:40px'></div>
 <div class='container'>

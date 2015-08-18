@@ -62,7 +62,7 @@ func handleError(w http.ResponseWriter, r *http.Request, err error) {
 	}
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(500)
-	templeStore.Execute(w, err.Error(), "error")
+	templeStore.Execute(w, &ErrorContext{loggedOutContext, err.Error()}, "error")
 }
 
 var loggedOutContext = &BaseContext{UserId: 0, UserName: "", ImageURL: ""}
@@ -89,6 +89,7 @@ func h(method string, route string, f labelMakerHandler, router *httprouter.Rout
 		client := github.NewClient(c.Client)
 		u, _, err := client.Users.Get("")
 		if err != nil {
+
 			handleError(w, r, err)
 			return
 		}
@@ -119,6 +120,5 @@ func home(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *Bas
 }
 
 func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params, ctx *BaseContext, client *github.Client) error {
-
-	return fmt.Errorf(ps.ByName("user"), ps.ByName("name"))
+	return fmt.Errorf("%s/%s", ps.ByName("user"), ps.ByName("name"))
 }

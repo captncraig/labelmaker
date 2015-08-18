@@ -2,7 +2,7 @@
 Oh Crap something went wrong.
 <br/>
 This is all I know: <br/>
-<pre>{{.}}</pre>
+<pre>{{.Err}}</pre>
 <br/>
 <a href="/">Return to Homepage perhaps</a>
 

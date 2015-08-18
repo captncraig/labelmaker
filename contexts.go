@@ -15,3 +15,8 @@ type Repository struct {
 	Id         int
 	User, Name string
 }
+
+type ErrorContext struct {
+	*BaseContext
+	Err string
+}

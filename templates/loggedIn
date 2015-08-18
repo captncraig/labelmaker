@@ -4,7 +4,7 @@
 
 <ul>
 {{range .Repos}}
-<li><a href="/{{.User}}/{{.Name}}">{{.User}}/{{.Name}}</a></li>
+<li><a href="/repo/{{.User}}/{{.Name}}">{{.User}}/{{.Name}}</a></li>
 
 {{end}}
 </ul>

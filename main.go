@@ -46,7 +46,7 @@ func main() {
 	router.HandlerFunc("GET", "/login", gh.RedirectToLogin)
 	router.HandlerFunc("GET", "/ghauth", gh.ExchangeCodeForToken)
 	h("GET", "/", home, router)
-	h("GET", "/:user/:name", repo, router)
+	h("GET", "/repo/:user/:name", repo, router)
 	router.HandlerFunc("GET", "/logout", func(w http.ResponseWriter, r *http.Request) {
 		gh.ClearCookie(w)
 		http.Redirect(w, r, "/", 302)

@@ -12,6 +12,7 @@ import (
 	"github.com/captncraig/ssgo"
 	"github.com/captncraig/temple"
 	"github.com/google/go-github/github"
+	"github.com/julienschmidt/httprouter"
 )
 
 var (
@@ -40,15 +41,16 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("/login", gh.RedirectToLogin)
-	http.HandleFunc("/ghauth", gh.ExchangeCodeForToken)
-	h("/", home)
-	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+	router := httprouter.New()
+	router.HandlerFunc("GET", "/login", gh.RedirectToLogin)
+	router.HandlerFunc("GET", "/ghauth", gh.ExchangeCodeForToken)
+	h("GET", "/", home, router)
+	router.HandlerFunc("GET", "/logout", func(w http.ResponseWriter, r *http.Request) {
 		gh.ClearCookie(w)
 		http.Redirect(w, r, "/", 302)
 	})
 
-	log.Fatal(http.ListenAndServe(":8787", nil))
+	log.Fatal(http.ListenAndServe(":8787", router))
 }
 
 func handleError(w http.ResponseWriter, r *http.Request, err error) {
@@ -68,16 +70,13 @@ type labelMakerHandler func(w http.ResponseWriter, r *http.Request, ctx *BaseCon
 
 // my "middleware" handler. Looks up token, gets github user, executes inner handler.
 // handles errors appropriately.
-func h(route string, f labelMakerHandler) {
-	http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
+func h(method string, route string, f labelMakerHandler, router *httprouter.Router) {
+	router.Handle(method, route, func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		c := gh.LookupToken(r)
 		if c == nil {
 			if r.URL.Path == "/" {
 				w.Header().Set("Content-Type", "text/html")
 				templeStore.Execute(w, loggedOutContext, "loggedOut")
-				return
-			} else if route == "/" {
-				http.NotFound(w, r)
 				return
 			} else {
 				http.Redirect(w, r, "/", 302)

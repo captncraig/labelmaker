@@ -55,14 +55,14 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8787", router))
 }
 
-func handleError(w http.ResponseWriter, r *http.Request, err error) {
+func handleError(w http.ResponseWriter, r *http.Request, ctx *BaseContext, err error) {
 	// a 401 from github often means our token has been revoked. Lets clear our cookie and start over.
 	if strings.Contains(err.Error(), "401 Bad credentials") {
 		gh.ClearCookie(w)
 	}
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(500)
-	templeStore.Execute(w, &ErrorContext{loggedOutContext, err.Error()}, "error")
+	templeStore.Execute(w, &ErrorContext{ctx, err.Error()}, "error")
 }
 
 var loggedOutContext = &BaseContext{UserId: 0, UserName: "", ImageURL: ""}
@@ -89,14 +89,13 @@ func h(method string, route string, f labelMakerHandler, router *httprouter.Rout
 		client := github.NewClient(c.Client)
 		u, _, err := client.Users.Get("")
 		if err != nil {
-
-			handleError(w, r, err)
+			handleError(w, r, loggedOutContext, err)
 			return
 		}
 		ctx := &BaseContext{UserId: *u.ID, UserName: *u.Login, ImageURL: *u.AvatarURL}
 		err = f(w, r, ps, ctx, client)
 		if err != nil {
-			handleError(w, r, err)
+			handleError(w, r, ctx, err)
 		}
 	})
 }

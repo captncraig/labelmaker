@@ -1,23 +1,11 @@
 </div>
-<div id="footer" style="background-color:gray;text-align:center">
+
+<footer >
 Copyright 2015 <a href="//github.com/captncraig"> Craig Peterson</a>. <a href="//github.com/captncraig/labelmaker">Source on github</a><br/>
 {{if .Result}}
 {{.Result.Remaining}} of {{.Result.Limit}} api requests remaining.
 
 {{end}}
-</div>
-  <script>
-
-  $(document).ready(function() {
-
-   var docHeight = $(window).height();
-   var footerHeight = $('#footer').height();
-   var footerTop = $('#footer').position().top + footerHeight;
-
-   if (footerTop < docHeight) {
-    $('#footer').css('margin-top', 0+ (docHeight - footerTop) + 'px');
-   }
-  });
- </script>
+</footer>
 </body>
 </html>

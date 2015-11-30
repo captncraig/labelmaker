@@ -5,6 +5,25 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <title>Labelmaker</title>
+<style>
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 25px;
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    text-align:center;
+    background-color: gray;
+}
+
+</style>
 </head>
 
 <body>

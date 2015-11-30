@@ -14,8 +14,11 @@
 {{if .Result.LastPage}}<a href="/?page={{.Result.LastPage}}">&gt;&gt;</a>{{end}}
 
 {{else}}
+<h3>Labelmaker</h3>
 
-Not
+This is a robot that will automatically apply labels or status changes to your github repositories.
+
+<a href="/login">Login with github</a> to get started.
 {{end}}
 
 {{template "footer" .}}

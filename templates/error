@@ -1,0 +1,14 @@
+{{template "header" .}}
+
+<h2>Uh Oh!</h2>
+
+One or more errors occured. Not sure what happened. Here's all I know:
+
+{{range .Errors}}
+<div class="alert alert-danger" role="alert">
+{{.}}
+</div>
+{{end}}
+
+
+{{template "footer" .}}

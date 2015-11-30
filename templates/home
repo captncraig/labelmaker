@@ -1,0 +1,21 @@
+{{template "header" .}}
+
+{{if .User}}
+
+<h3>Your Repositories:</h3>
+<ul>
+{{range .Repos}}
+<li> <h5><a href="/repo/{{.Owner.Login}}/{{.Name}}">{{.Owner.Login}}/{{.Name}} </a></h5></li>
+{{end}}
+</ul>
+{{if .Result.FirstPage}}<a href="/?page={{.Result.FirstPage}}">&lt;&lt;</a>{{end}}
+{{if .Result.PrevPage}}<a href="/?page={{.Result.PrevPage}}">Newer</a> {{end}}
+{{if .Result.NextPage}} <a href="/?page={{.Result.NextPage}}">Older</a>{{end}}
+{{if .Result.LastPage}}<a href="/?page={{.Result.LastPage}}">&gt;&gt;</a>{{end}}
+
+{{else}}
+
+Not
+{{end}}
+
+{{template "footer" .}}

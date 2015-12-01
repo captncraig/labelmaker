@@ -18,6 +18,16 @@
 			"revisionTime": "2015-07-18T15:06:38-06:00"
 		},
 		{
+			"path": "github.com/garyburd/redigo/internal",
+			"revision": "6ece6e0a09f28cc399b21550cbf37ab39ba63cce",
+			"revisionTime": "2015-10-29T16:55:27-07:00"
+		},
+		{
+			"path": "github.com/garyburd/redigo/redis",
+			"revision": "6ece6e0a09f28cc399b21550cbf37ab39ba63cce",
+			"revisionTime": "2015-10-29T16:55:27-07:00"
+		},
+		{
 			"path": "github.com/gin-gonic/gin",
 			"revision": "52fcc5dbf6e94df33ad313858fb94b713e9d1b4a",
 			"revisionTime": "2015-09-25T12:14:45+02:00"
@@ -116,6 +126,11 @@
 			"path": "gopkg.in/bluesuncorp/validator.v5",
 			"revision": "d5acf1dac43705f8bfbb71d878e290e2bed3950b",
 			"revisionTime": "2015-09-24T07:44:28-04:00"
+		},
+		{
+			"path": "gopkg.in/fsnotify.v1",
+			"revision": "2cdd39bd6129c6a49c74fb07fb9d77ba1271c572",
+			"revisionTime": "2015-11-17T01:24:26-05:00"
 		},
 		{
 			"path": "gopkg.in/yaml.v2",

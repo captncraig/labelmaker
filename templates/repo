@@ -1,0 +1,14 @@
+{{template "header" .}}
+
+<h3>Repo {{.Owner}}/{{.Name}}</h3>
+
+{{if .Info}}
+	
+Hook installed!
+
+{{else}}
+Nothing set up.<form action="/install/{{.Owner}}/{{.Name}}" method="POST"> <button class="btn btn-default" action="submit">Install hook!</button></form>
+
+{{end}}
+
+{{template "footer" .}}
